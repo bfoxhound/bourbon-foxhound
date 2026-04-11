@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Favorites | Bourbon Fox and Hound</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Georgia', serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            border-bottom: 1px solid #222;
+            background: #0a0a0a;
+        }
+        
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: #d4a574;
+        }
+        
+        /* Marquee */
+        .marquee {
+            background: #d4a574;
+            color: #0a0a0a;
+            padding: 10px;
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%);
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        
+        .page-header h1 span {
+            color: #d4a574;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Featured Spot - The Crown */
+        .featured-section {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        
+        .featured-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #d4a574;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .featured-label::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4a574);
+        }
+        
+        .featured-label::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: #d4a574;
+        }
+        
+        .featured-card {
+            background: linear-gradient(135deg, #1a1510 0%, #0f0f0f 100%);
+            border: 2px solid #d4a574;
+            border-radius: 4px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .featured-card::before {
+            content: '👑';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 48px;
+            opacity: 0.15;
+        }
+        
+        .featured-badge {
+            display: inline-block;
+            background: #d4a574;
+            color: #0a0a0a;
+            padding: 6px 16px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .featured-card h2 {
+            font-size: 36px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .featured-tagline {
+            color: #d4a574;
+            font-style: italic;
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+        
+        .featured-description {
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .featured-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            font-size: 11px;
+            color: #666;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .meta-value {
+            font-size: 15px;
+            color: #f5f5f5;
+        }
+        
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .location-card {
+            background: #151515;
+            padding: 20px;
+            border-left: 3px solid #d4a574;
+        }
+        
+        .location-name {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #f5f5f5;
+        }
+        
+        .location-address {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        
+        .location-hours {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .featured-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: #d4a574;
+            color: #0a0a0a;
+        }
+        
+        .btn-primary:hover {
+            background: #c49464;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #d4a574;
+            border: 1px solid #d4a574;
+        }
+        
+        .btn-secondary:hover {
+            background: #d4a574;
+            color: #0a0a0a;
+        }
+        
+        /* Specialties Tags */
+        .specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .specialty-tag {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 8px 14px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #888;
+        }
+        
+        /* Community Picks Section */
+        .community-section {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+        }
+        
+        .section-title span {
+            color: #d4a574;
+            font-size: 18px;
+        }
+        
+        .pick-count {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Pick Cards */
+        .picks-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .pick-card {
+            background: #111;
+            border-left: 4px solid #444;
+            padding: 25px;
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            transition: all 0.2s;
+        }
+        
+        .pick-card:hover {
+            background: #161616;
+            border-left-color: #666;
+        }
+        
+        .pick-rank {
+            font-size: 32px;
+            font-weight: 300;
+            color: #444;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .pick-content {
+            flex: 1;
+        }
+        
+        .pick-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .pick-name {
+            font-size: 20px;
+            font-weight: 400;
+            color: #f5f5f5;
+            text-decoration: none;
+        }
+        
+        .pick-name:hover {
+            color: #d4a574;
+        }
+        
+        .pick-type {
+            font-size: 10px;
+            padding: 4px 10px;
+            background: #222;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .pick-type.bar { color: #c9a227; }
+        .pick-type.retailer { color: #4a9; }
+        .pick-type.restaurant { color: #c85; }
+        
+        .pick-tagline {
+            color: #666;
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .pick-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        
+        .pick-details span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .pick-recommended {
+            font-size: 12px;
+            color: #555;
+        }
+        
+        .pick-recommended strong {
+            color: #888;
+            font-weight: 400;
+        }
+        
+        .pick-votes {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 15px;
+            margin-top: 15px;
+            border-top: 1px solid #222;
+        }
+        
+        .vote-btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #666;
+            padding: 8px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .vote-btn:hover {
+            border-color: #d4a574;
+            color: #d4a574;
+        }
+        
+        .vote-btn.voted {
+            background: #d4a574;
+            color: #0a0a0a;
+            border-color: #d4a574;
+        }
+        
+        .vote-count {
+            color: #888;
+            font-size: 13px;
+        }
+        
+        /* Submit Section */
+        .submit-section {
+            max-width: 900px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+        
+        .submit-card {
+            background: linear-gradient(135deg, #111 0%, #0a0a0a 100%);
+            border: 1px dashed #444;
+            border-radius: 4px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .submit-card h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .submit-card p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            background: #0f0f0f;
+            padding: 60px 20px;
+            border-top: 1px solid #222;
+        }
+        
+        .how-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .how-item {
+            text-align: center;
+        }
+        
+        .how-number {
+            font-size: 48px;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .how-title {
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #d4a574;
+        }
+        
+        .how-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #222;
+            color: #444;
+            font-size: 13px;
+        }
+        
+        .footer-tagline {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .featured-card {
+                padding: 25px;
+            }
+            
+            .featured-card h2 {
+                font-size: 28px;
+            }
+            
+            .pick-card {
+                flex-direction: column;
+            }
+            
+            .pick-rank {
+                font-size: 24px;
+            }
+            
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#">Blog</a>
+        <a href="#">Home</a>
+        <a href="#">App Features</a>
+        <a href="#">The Hunt</a>
+        <a href="#">About Us</a>
+        <a href="#" class="active">Local Favorites</a>
+    </nav>
+    
+    <!-- Marquee -->
+    <div class="marquee">
+        THE HUNT IS LIVE // TRACK NEW DROPS, RUMORS & RARE RELEASES // ENTER THE HUNT
+    </div>
+    
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1>LOCAL <span>FAVORITES</span></h1>
+        <p>The best spots to find, sip, and savor — as voted by the Fox and Hound community. Know a hidden gem? Share it.</p>
+    </header>
+    
+    <!-- Featured Partner -->
+    <section class="featured-section">
+        <div class="featured-label">
+            The Fox's Den
+        </div>
+        
+        <div class="featured-card">
+            <div class="featured-badge">Featured Partner</div>
+            
+            <h2>The Brothers Beer & Bourbon House</h2>
+            <p class="featured-tagline">"Your home for exploring craft beer and curated whiskey"</p>
+            
+            <p class="featured-description">
+                Two locations, one mission: serious pours without the pretension. Rotating craft taps, 
+                a meticulously curated whiskey list, and barrel picks that'll make you reconsider your 
+                allocated bottle strategy. When we're not hunting, we're here — arguing mash bills over 
+                pints and plotting the next score.
+            </p>
+            
+            <div class="specialties">
+                <span class="specialty-tag">🍺 Rotating Draft Selection</span>
+                <span class="specialty-tag">🥃 Curated Whiskey List</span>
+                <span class="specialty-tag">🛢️ Barrel Picks</span>
+                <span class="specialty-tag">🤝 Collab Beers</span>
+            </div>
+            
+            <div class="locations-grid">
+                <div class="location-card">
+                    <div class="location-name">📍 Ballwin</div>
+                    <div class="location-address">14738 B Manchester Rd, Ballwin, MO 63011</div>
+                    <div class="location-hours">Mon-Sat: 11am-10pm • Sun: 11am-8pm</div>
+                </div>
+                <div class="location-card">
+                    <div class="location-name">📍 Sunset Hills</div>
+                    <div class="location-address">3880 S Lindbergh Blvd, St. Louis, MO 63127</div>
+                    <div class="location-hours">Mon-Sat: 11am-10pm • Sun: 11am-8pm</div>
+                </div>
+            </div>
+            
+            <div class="featured-actions">
+                <a href="https://3bhouse.com" class="btn btn-primary" target="_blank">Visit Website</a>
+                <a href="#" class="btn btn-secondary">Get Directions</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Community Picks -->
+    <section class="community-section">
+        <div class="section-header">
+            <h3 class="section-title">
+                <span>🦊</span>
+                Community Picks
+            </h3>
+            <span class="pick-count">47 favorites submitted</span>
+        </div>
+        
+        <div class="picks-grid">
+            <!-- Pick #1 -->
+            <div class="pick-card">
+                <div class="pick-rank">01</div>
+                <div class="pick-content">
+                    <div class="pick-header">
+                        <a href="#" class="pick-name">Randolph's Wine & Spirits</a>
+                        <span class="pick-type retailer">Retailer</span>
+                    </div>
+                    <p class="pick-tagline">"The allocated bottle whisperer of St. Louis"</p>
+                    <div class="pick-details">
+                        <span>📍 Clayton, MO</span>
+                        <span>⭐ 4.8 (203 reviews)</span>
+                        <span>🏆 Known for: Store picks</span>
+                    </div>
+                    <p class="pick-recommended">Recommended by <strong>@bourbonhunter99</strong></p>
+                    <div class="pick-votes">
+                        <button class="vote-btn">▲ Agree</button>
+                        <span class="vote-count">42 hunters vouch for this</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pick #2 -->
+            <div class="pick-card">
+                <div class="pick-rank">02</div>
+                <div class="pick-content">
+                    <div class="pick-header">
+                        <a href="#" class="pick-name">Small Batch Whiskey Bar</a>
+                        <span class="pick-type bar">Bar</span>
+                    </div>
+                    <p class="pick-tagline">"Serious whiskey, zero attitude"</p>
+                    <div class="pick-details">
+                        <span>📍 St. Louis, MO</span>
+                        <span>⭐ 4.7 (178 reviews)</span>
+                        <span>🏆 Known for: Flights & knowledge</span>
+                    </div>
+                    <p class="pick-recommended">Recommended by <strong>@mashbill_maven</strong></p>
+                    <div class="pick-votes">
+                        <button class="vote-btn">▲ Agree</button>
+                        <span class="vote-count">38 hunters vouch for this</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pick #3 -->
+            <div class="pick-card">
+                <div class="pick-rank">03</div>
+                <div class="pick-content">
+                    <div class="pick-header">
+                        <a href="#" class="pick-name">The Libertine</a>
+                        <span class="pick-type restaurant">Restaurant</span>
+                    </div>
+                    <p class="pick-tagline">"Bourbon list as deep as their burger menu"</p>
+                    <div class="pick-details">
+                        <span>📍 St. Louis, MO</span>
+                        <span>⭐ 4.6 (267 reviews)</span>
+                        <span>🏆 Known for: Food + whiskey pairings</span>
+                    </div>
+                    <p class="pick-recommended">Recommended by <strong>@dram_drinker</strong></p>
+                    <div class="pick-votes">
+                        <button class="vote-btn voted">▲ Agreed</button>
+                        <span class="vote-count">35 hunters vouch for this</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pick #4 -->
+            <div class="pick-card">
+                <div class="pick-rank">04</div>
+                <div class="pick-content">
+                    <div class="pick-header">
+                        <a href="#" class="pick-name">Friar Tuck Beverage</a>
+                        <span class="pick-type retailer">Retailer</span>
+                    </div>
+                    <p class="pick-tagline">"The OG of St. Louis bourbon hunting"</p>
+                    <div class="pick-details">
+                        <span>📍 Multiple Locations</span>
+                        <span>⭐ 4.4 (892 reviews)</span>
+                        <span>🏆 Known for: Lottery releases</span>
+                    </div>
+                    <p class="pick-recommended">Recommended by <strong>@secondary_skeptic</strong></p>
+                    <div class="pick-votes">
+                        <button class="vote-btn">▲ Agree</button>
+                        <span class="vote-count">28 hunters vouch for this</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pick #5 -->
+            <div class="pick-card">
+                <div class="pick-rank">05</div>
+                <div class="pick-content">
+                    <div class="pick-header">
+                        <a href="#" class="pick-name">Planter's House</a>
+                        <span class="pick-type bar">Bar</span>
+                    </div>
+                    <p class="pick-tagline">"Where bartenders actually know their bourbon"</p>
+                    <div class="pick-details">
+                        <span>📍 St. Louis, MO</span>
+                        <span>⭐ 4.8 (312 reviews)</span>
+                        <span>🏆 Known for: Craft cocktails + rare pours</span>
+                    </div>
+                    <p class="pick-recommended">Recommended by <strong>@proof_seeker</strong></p>
+                    <div class="pick-votes">
+                        <button class="vote-btn">▲ Agree</button>
+                        <span class="vote-count">24 hunters vouch for this</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Submit Section -->
+    <section class="submit-section">
+        <div class="submit-card">
+            <h3>Know a Spot We Missed?</h3>
+            <p>The best intel comes from the hunt itself. Share your hidden gem with the pack.</p>
+            <button class="btn btn-primary">Submit a Favorite</button>
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="how-container">
+            <div class="how-item">
+                <div class="how-number">01</div>
+                <h4 class="how-title">Discover</h4>
+                <p class="how-desc">Find a bar, retailer, or hidden gem worth sharing with fellow hunters.</p>
+            </div>
+            <div class="how-item">
+                <div class="how-number">02</div>
+                <h4 class="how-title">Submit</h4>
+                <p class="how-desc">Tell us why it deserves recognition. Be specific — good intel saves time.</p>
+            </div>
+            <div class="how-item">
+                <div class="how-number">03</div>
+                <h4 class="how-title">Rise</h4>
+                <p class="how-desc">Community votes push the best spots up the ranks. Cream rises, always.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-tagline">Intel, not ego. Open the damn bottle.</p>
+        <p>© 2026 The Bourbon Fox and Hound. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

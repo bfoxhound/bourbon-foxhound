@@ -1,0 +1,37 @@
+{
+  "version": "1.0.0",
+  "agents": [
+    {
+      "name": "bourbon-monitor",
+      "schedule": "0 10,18 * * *",
+      "description": "Scrape web for bourbon drops, news, and sales",
+      "output": "bourbon-drops.json",
+      "enabled": true
+    },
+    {
+      "name": "bourbon-git-sync",
+      "schedule": "5 10,18 * * *",
+      "description": "Push bourbon data to GitHub Pages",
+      "script": "sync-bourbon-to-github.sh",
+      "enabled": true
+    },
+    {
+      "name": "price-tracker",
+      "schedule": "0 */4 * * *",
+      "description": "Track secondary market prices (future)",
+      "enabled": false
+    },
+    {
+      "name": "trending-detector",
+      "schedule": "0 9 * * *",
+      "description": "Analyze review velocity to surface trending bourbons",
+      "enabled": false
+    },
+    {
+      "name": "location-enricher",
+      "schedule": "on-review-created",
+      "description": "Add venue metadata to new reviews",
+      "enabled": false
+    }
+  ]
+}
