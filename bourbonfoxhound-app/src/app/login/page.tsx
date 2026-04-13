@@ -39,7 +39,10 @@ export default function LoginPage() {
       <nav className="bg-white border-b border-stone-200 px-4 py-4">
         <Link href="/" className="flex items-center space-x-2 w-fit">
           <GlassWater className="h-8 w-8 text-amber-700" />
-          <span className="text-xl font-bold">BourbonFoxhound</span>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold">BourbonFoxhound</span>
+            <span className="text-xs text-stone-500 italic">Intel, not ego.</span>
+          </div>
         </Link>
       </nav>
 

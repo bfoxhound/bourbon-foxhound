@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { GlassWater, Plus, Map as MapIcon, List } from 'lucide-react'
+import { GlassWater, Plus, Map as MapIcon, List, BookOpen, User, LogIn } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -34,6 +34,18 @@ export default function MapPage() {
   const [loading, setLoading] = useState(true)
   const [selectedReview, setSelectedReview] = useState<Review | null>(null)
   const [viewMode, setViewMode] = useState<'map' | 'list'>('map')
+  const [user, setUser] = useState<any>(null)
+  const [authLoading, setAuthLoading] = useState(true)
+
+  // Check auth state
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      setAuthLoading(false)
+    }
+    checkAuth()
+  }, [])
 
   // Fetch reviews
   useEffect(() => {
@@ -147,17 +159,26 @@ export default function MapPage() {
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/feed" className="flex items-center space-x-2">
             <GlassWater className="h-6 w-6 text-amber-700" />
-            <span className="font-bold hidden sm:inline">BourbonFoxhound</span>
+            <div className="flex flex-col">
+              <span className="font-bold hidden sm:inline">BourbonFoxhound</span>
+              <span className="text-xs text-stone-500 italic hidden sm:inline">Intel, not ego.</span>
+            </div>
           </Link>
           
           <div className="flex items-center space-x-4">
-            <Link
-              href="/learn"
-              className="hidden sm:flex items-center text-stone-600 hover:text-amber-700"
-            >
+            <Link href="/reviews" className="hidden sm:flex items-center text-stone-600 hover:text-amber-700">
+              The Hound
+            </Link>
+            <Link href="/learn" className="hidden sm:flex items-center text-stone-600 hover:text-amber-700">
               <BookOpen className="h-5 w-5 mr-1" />
               Learn
             </Link>
+            
+            {!authLoading && user && (
+              <Link href="/profile" className="text-stone-600 hover:text-amber-700" title="Profile">
+                <User className="h-5 w-5" />
+              </Link>
+            )}
             
             <button
               onClick={() => setViewMode('map')}
@@ -173,13 +194,26 @@ export default function MapPage() {
             </button>
           </div>
 
-          <Link
-            href="/reviews/new"
-            className="bg-amber-700 text-white px-4 py-2 rounded-lg flex items-center space-x-1 hover:bg-amber-800"
-          >
-            <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline">Add Review</span>
-          </Link>
+          {/* Show Add Review if logged in, Sign In if not */}
+          {!authLoading && (
+            user ? (
+              <Link
+                href="/reviews/new"
+                className="bg-amber-700 text-white px-4 py-2 rounded-lg flex items-center space-x-1 hover:bg-amber-800"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="hidden sm:inline">Add Review</span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="bg-stone-800 text-white px-4 py-2 rounded-lg flex items-center space-x-1 hover:bg-stone-900"
+              >
+                <LogIn className="h-4 w-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </Link>
+            )
+          )}
         </div>
       </nav>
 
@@ -228,12 +262,29 @@ export default function MapPage() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center bg-white/90 p-6 rounded-xl">
                 <p className="text-stone-600 mb-4">No reviews yet. Be the first!</p>
-                <Link
-                  href="/reviews/new"
-                  className="bg-amber-700 text-white px-6 py-3 rounded-xl inline-block"
-                >
-                  Add First Review
-                </Link>
+                {user ? (
+                  <Link
+                    href="/reviews/new"
+                    className="bg-amber-700 text-white px-6 py-3 rounded-xl inline-block"
+                  >
+                    Add First Review
+                  </Link>
+                ) : (
+                  <div className="space-y-3">
+                    <Link
+                      href="/signup"
+                      className="bg-amber-700 text-white px-6 py-3 rounded-xl inline-block"
+                    >
+                      Join to Add Review
+                    </Link>
+                    <p className="text-sm text-stone-500">
+                      Already have an account?{' '}
+                      <Link href="/login" className="text-amber-700 hover:underline">
+                        Sign in
+                      </Link>
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -246,12 +297,29 @@ export default function MapPage() {
           {reviews.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-stone-600 mb-4">No reviews yet. Be the first!</p>
-              <Link
-                href="/reviews/new"
-                className="bg-amber-700 text-white px-6 py-3 rounded-xl inline-block"
-              >
-                Add First Review
-              </Link>
+              {user ? (
+                <Link
+                  href="/reviews/new"
+                  className="bg-amber-700 text-white px-6 py-3 rounded-xl inline-block"
+                >
+                  Add First Review
+                </Link>
+              ) : (
+                <div className="space-y-3">
+                  <Link
+                    href="/signup"
+                    className="bg-amber-700 text-white px-6 py-3 rounded-xl inline-block"
+                  >
+                    Join to Add Review
+                  </Link>
+                  <p className="text-sm text-stone-500">
+                    Already have an account?{' '}
+                    <Link href="/login" className="text-amber-700 hover:underline">
+                      Sign in
+                    </Link>
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             reviews.map((review) => (

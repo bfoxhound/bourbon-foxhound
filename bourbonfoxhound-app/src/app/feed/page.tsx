@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, MapPin, Star, Camera } from 'lucide-react'
+import { ArrowLeft, MapPin, Star, Camera, User, GlassWater } from 'lucide-react'
 
 export default function FeedPage() {
   return (
@@ -8,16 +8,35 @@ export default function FeedPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-2">
-              <ArrowLeft className="h-5 w-5 text-stone-600" />
-              <span className="text-stone-600">Back</span>
+              <GlassWater className="h-6 w-6 text-amber-700" />
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-stone-900 leading-tight">BourbonFoxhound</span>
+                <span className="text-xs text-stone-500 italic">Intel, not ego.</span>
+              </div>
             </Link>
             <h1 className="text-xl font-bold">Discover</h1>
-            <Link 
-              href="/reviews/new"
-              className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-800"
-            >
-              Add Review
-            </Link>
+            <div className="flex items-center space-x-2">
+              <Link 
+                href="/reviews"
+                className="hidden sm:flex items-center text-stone-600 hover:text-amber-700 mr-2"
+                title="The Hound Reviews"
+              >
+                The Hound
+              </Link>
+              <Link 
+                href="/profile"
+                className="p-2 text-stone-600 hover:text-amber-700"
+                title="Profile"
+              >
+                <User className="h-5 w-5" />
+              </Link>
+              <Link 
+                href="/reviews/new"
+                className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-800"
+              >
+                Add Review
+              </Link>
+            </div>
           </div>
         </div>
       </nav>

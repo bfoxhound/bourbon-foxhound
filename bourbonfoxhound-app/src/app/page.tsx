@@ -20,6 +20,9 @@ export default function Home() {
               <Link href="/feed" className="text-stone-600 hover:text-amber-700 transition-colors">
                 The Hunt
               </Link>
+              <Link href="/reviews" className="text-stone-600 hover:text-amber-700 transition-colors">
+                The Hound
+              </Link>
               <Link href="/map" className="text-stone-600 hover:text-amber-700 transition-colors">
                 Map
               </Link>

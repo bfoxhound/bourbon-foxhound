@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 
   // Protect routes that require auth
   if (request.nextUrl.pathname.startsWith('/reviews/new') || 
-      request.nextUrl.pathname.startsWith('/map')) {
+      request.nextUrl.pathname.startsWith('/profile')) {
     if (!session) {
       return NextResponse.redirect(new URL('/login', request.url))
     }

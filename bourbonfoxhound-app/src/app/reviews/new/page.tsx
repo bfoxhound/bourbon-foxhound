@@ -173,7 +173,10 @@ export default function NewReviewPage() {
             <ArrowLeft className="h-5 w-5 mr-1" />
             Cancel
           </Link>
-          <h1 className="font-semibold">New Review</h1>
+          <div className="flex flex-col items-center">
+            <h1 className="font-semibold">New Review</h1>
+            <span className="text-xs text-stone-400 italic">Intel, not ego.</span>
+          </div>
           <div className="w-16"></div>
         </div>
       </nav>
